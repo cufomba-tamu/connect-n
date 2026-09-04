@@ -4,6 +4,7 @@ A terminal-based, two-player Connect Four game with configurable board size and 
 
 ## Team
 - Chibuzo Ufomba ([@cufomba-tamu](https://github.com/cufomba-tamu))
+- Michael Zhou 
 
 
 ## Description

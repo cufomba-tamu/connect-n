@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class Game
-  def ask_column(player)
-    print "#{player.name}, choose a column, or 'q' to quit: "
-    raw = gets.strip
+  def ask_column(player, input: $stdin, output: $stdout)
+    output.print "#{player.name}, choose a column, or 'q' to quit: "
+    raw = input.gets.strip
 
     if raw.downcase == 'q'
-      puts 'Thanks for playing!'
+      output.puts 'Thanks for playing!'
       exit(0)
     end
 

@@ -21,8 +21,12 @@
 - calls Board methods
 - ends/restarts games
 
- ScoreBoard
+ Scoreboard class
 - records wins
 - displays scores
 - saves scores to a file
 - loads scores from a file
+
+
+ Player class
+- tracks player 1 and 2 names, piece color

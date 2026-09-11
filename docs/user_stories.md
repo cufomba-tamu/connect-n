@@ -66,6 +66,8 @@ multiple play sessions **so that** my friend and I can see who's ahead
 over time, not just within a single game.
 
 **Acceptance criteria:**
+- Each player is prompted for a name before play begins; a blank entry
+  falls back to a sensible default (e.g. their mark, "Red"/"Yellow").
 - A win is recorded to a persistent scoreboard file immediately when the
   game ends.
 - Closing and reopening the app preserves previous win counts.
@@ -111,3 +113,15 @@ without confusion.
   one exists.
 - Otherwise, the computer favors columns closer to the center.
 - The computer never makes an invalid move (full/out-of-range column).
+
+---
+
+## 9. Set up player identity — 1 point
+
+**As a** player, **I want to** be represented by a name and a distinct
+mark (piece) **so that** the game and scoreboard can tell players apart.
+
+**Acceptance criteria:**
+- Each player has a name and a mark (e.g. `:red` or `:yellow`).
+- A player's mark is what gets placed on the board and checked for wins.
+- A player's name is what gets used to record and look up scoreboard wins.

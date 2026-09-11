@@ -1,1 +1,0 @@
-puts 'Welcome to Connect N Game'

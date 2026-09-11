@@ -1,0 +1,28 @@
+* Main classes/modules
+   * Board - holds the grid, drops pieces with gravity, detects wins and draws, and renders the board to the terminal
+   * Game - the main controller: shows the menu, runs the turn loop, alternates players, and handles the end of each round
+   * ScoreBoard - Keeps track of which player is winning the series, for example, best of 5 series
+   * Player - name and piece color
+
+
+   Board class
+- creates the grid
+- displays the grid
+- drops pieces
+- checks if columns are full
+- checks for wins
+- checks for draws
+
+ Game class
+- gets board settings
+- gets player/color choices
+- controls player turns
+- validates input
+- calls Board methods
+- ends/restarts games
+
+ ScoreBoard
+- records wins
+- displays scores
+- saves scores to a file
+- loads scores from a file

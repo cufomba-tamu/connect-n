@@ -29,3 +29,18 @@ git clone git@github.com-tamu:cufomba-tamu/connect-n.git
 cd connect-n
 bundle install
 ```
+
+## Running the game
+
+🚧 Not yet available — `Game` and `Board` are still being wired together.
+This section will be filled in once `bin/play.rb` is functional.
+
+## Running the tests
+
+```bash
+bundle exec rspec
+```
+
+Runs the full spec suite (`Board`, `Player`, `Game`, and `Scoreboard`
+specs). SimpleCov generates a coverage report automatically on each run —
+open `coverage/index.html` in a browser afterward to view it.

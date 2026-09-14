@@ -3,7 +3,7 @@ class Board
   attr_accessor :rows, :columns, :grid  # we create the getter and setter methods
 
   def initialize(rows, columns)
-    @rows = rows  # board remembers the rows and columns requested
+    @rows = rows  # board remembers the rows and columns requested... @ means instance variable
     @columns = columns
 
     # create an empty game board using the rows & columns
@@ -19,5 +19,5 @@ class Board
 
 end
 
-board = Board.new(6, 7)
-board.display_board
+# board = Board.new(6, 7)
+# board.display_board

@@ -17,9 +17,24 @@ class Game
       end
 
       column = raw.to_i - 1 # players type 1-based, we store 0-based
-      return column if column.between?(0, board.columns - 1)
+      unless column.between?(0, board.columns - 1)
+        output.puts "Column must be between 1 and #{board.columns}."
+        next
+      end
 
-      output.puts "Column must be between 1 and #{board.columns}."
+      if column_full?(board, column)
+        output.puts "Column #{column + 1} is full."
+        next
+      end
+
+      return column
     end
+  end
+
+  private
+
+  # TEMPORARY
+  def column_full?(board, column)
+    board.grid[0][column] != ' '
   end
 end

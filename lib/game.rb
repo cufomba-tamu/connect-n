@@ -22,19 +22,12 @@ class Game
         next
       end
 
-      if column_full?(board, column)
+      if board.column_full?(column)
         output.puts "Column #{column + 1} is full."
         next
       end
 
       return column
     end
-  end
-
-  private
-
-  # TEMPORARY
-  def column_full?(board, column)
-    board.grid[0][column] != ' '
   end
 end

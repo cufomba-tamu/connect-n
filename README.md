@@ -6,6 +6,10 @@ A terminal-based, two-player Connect Four game with configurable board size and 
 - Chibuzo Ufomba ([@cufomba-tamu](https://github.com/cufomba-tamu))
 - Michael Zhou 
 
+## Project Tracker
+[GitHub Project board](https://github.com/users/cufomba-tamu/projects/1) — user stories, point estimates, assignees, and status.
+
+
 ## Description
 Two players alternate dropping pieces into a column; each piece falls to
 the lowest open row ("gravity"), just like the physical game. First

@@ -8,8 +8,8 @@
    Board class - Michael Z
 - creates the grid - done
 - displays the grid - done
-- drops pieces - in progress
-- checks if columns are full
+- drops pieces - done
+- checks if columns are full or not - in progress
 - checks for wins
 - checks for draws
 
@@ -20,6 +20,7 @@
 - validates input
 - calls Board methods
 - ends/restarts games
+- convert column indexes.. ruby counts from index 0.. user does not know this
 
  Scoreboard class
 - records wins

@@ -22,8 +22,20 @@ class Board
 
       if @grid[row][column] == " " # check if position is empty
         @grid[row][column] = piece # places the piece onto the selected empty position
-        return
+        return true
       end
     end
+    false # if no empty spaces are found, the column is full
   end
+
+  # check if the column is completely full or not
+  def column_full?(column)
+    if @grid[0][column] == " "
+      false # returns false if top position of selected column is empty
+    else
+      true # returns true if the top position contains a piece
+    end
+  end
+
+
 end

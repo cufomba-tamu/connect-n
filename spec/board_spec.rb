@@ -32,6 +32,13 @@ describe Board do  # testing the Board class using rspec
                                                                           # this outcome to be printed to the terminal
   end
 
+  it "drops a piece into the bottom of the grid/column" do
+    board = Board.new(2, 3)
+    board.drop_piece(2, "R") # drops R into index 2 (3rd column)
+
+    expect(board.grid[1][2]).to eq("R")
+  end
+
 end
 
 

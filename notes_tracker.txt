@@ -5,10 +5,10 @@
    * Player - name and piece color
 
 
-   Board class
-- creates the grid
-- displays the grid
-- drops pieces
+   Board class - Michael Z
+- creates the grid - done
+- displays the grid - done
+- drops pieces - in progress
 - checks if columns are full
 - checks for wins
 - checks for draws

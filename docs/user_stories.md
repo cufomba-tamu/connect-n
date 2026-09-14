@@ -125,3 +125,18 @@ mark (piece) **so that** the game and scoreboard can tell players apart.
 - Each player has a name and a mark (e.g. `:red` or `:yellow`).
 - A player's mark is what gets placed on the board and checked for wins.
 - A player's name is what gets used to record and look up scoreboard wins.
+
+## 10. Play a full game from the terminal — 3 points
+
+**As a** player, **I want to** actually run the game from the terminal
+**so that** I can play a full match from start to finish, not just
+exercise individual pieces through tests.
+
+**Acceptance criteria:**
+- Running `ruby bin/play.rb` starts a real, playable game.
+- Two players alternate turns using the real `Board` and `Game` logic —
+  not test doubles.
+- The game correctly ends on a win or a draw, with the result shown to
+  the players.
+- Once `Scoreboard` is available, a win is recorded to it as part of
+  ending the game.

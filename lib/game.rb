@@ -30,4 +30,20 @@ class Game
       return column
     end
   end
+
+  def play(players, board, input: $stdin, output: $stdout, scoreboard: nil)
+    current = 0
+    loop do
+      board.display_board
+      player = players[current]
+      column = ask_column(player, board, input: input, output: output)
+      board.drop_piece(column, player.mark)
+
+      # TODO: check for a win here once Board exposes win detection (Issue #2)
+      # TODO: check for a draw here once Board exposes that (Issue #12)
+      # TODO: record a win to Scoreboard once it exists (Issue #5)
+
+      current = (current + 1) % players.size
+    end
+  end
 end

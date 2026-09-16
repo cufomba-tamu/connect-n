@@ -43,20 +43,22 @@ app by mistyping.
 
 ---
 
-## 4. Configure the board (essential) — 3 points
+## 4. Configure the board — 3 points
 
-**As a** pair of players, **we want to** choose the board size and win
-length before the game starts **so that** we can play Connect 4, Connect
-5, Connect 6, or any other variant we like.
+**As a** pair of players, **we want to** choose how many pieces in a row
+wins **so that** we can play Connect 4, Connect 5, Connect 6, or any
+other variant we like, without having to think about board dimensions
+ourselves.
 
 **Acceptance criteria:**
-- Prompted for columns, rows, and win length at the start of a game, with
-  sensible defaults (7×6, win length 4) if the player just presses Enter.
-- A configuration where the win length can't fit anywhere on the board
-  (e.g. a 3×3 board with win length 4) is rejected with a specific error
-  message, and the player is asked again rather than the game crashing or
-  silently proceeding.
-
+- Prompted for a win length ("connect how many in a row?") at the start
+  of a game, with a sensible default (4) if the player just presses
+  Enter.
+- The board's dimensions are derived automatically from the chosen win
+  length, rather than entered separately.
+- A win length outside a reasonable range (too small to be a real game,
+  or large enough to be impractical/unsafe to allocate) is rejected with
+  a clear message, and the player is asked again.
 ---
 
 ## 5. Track wins across sessions — 2 points

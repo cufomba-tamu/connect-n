@@ -157,9 +157,71 @@ describe Board do  # testing the Board class using rspec
   end
 
 
+  # test diagonal win going left to the right side (\)
+  it "detects a diagonal win a diagonal win going down right" do
+    board = Board.new(6, 7)
+
+    # manually place the pieces to create the diagonal win \... since we are not dropping anymore
+    board.grid[2][0] = "R"
+    board.grid[3][1] = "R"
+    board.grid[4][2] = "R"
+    board.grid[5][3] = "R"
+
+    expect(board.diagonal_win?("R")).to eq(true) # 4 diagonal pieces is a win
+  end
+
+  # test diagonal win going down from right to left side (/)
+  it "detect a diagonal win a diagonal win going down to left side" do
+    board = Board.new(6, 7)
+
+    # manually place the pieces. diagonal win from right to left
+    board.grid[2][3] = "R"
+    board.grid[3][2] = "R"
+    board.grid[4][1] = "R"
+    board.grid[5][0] = "R"
+
+    expect(board.diagonal_win?("R")).to eq(true) # true is we have 4 consecutive pieces diagonally
+  end
 
 
-end
+  # test that 3 diagonal pieces are not enough
+  it "does not detect a diagonal win if we have 3 pieces only" do
+  board = Board.new(6, 7)
+
+  board.grid[3][0] = "R"
+  board.grid[4][1] = "R"
+  board.grid[5][2] = "R"
+
+  expect(board.diagonal_win?("R")).to eq(false)
+  end
+
+  # test to check a win in any direction
+  it "detects a win in any direction" do
+    board = Board.new(6, 7)
+
+    board.drop_piece(0, "R") # 4 Rs horizontally
+    board.drop_piece(1, "R")
+    board.drop_piece(2, "R")
+    board.drop_piece(3, "R")
+
+    expect(board.win?("R")).to eq(true) # win method should detect R has won
+  end
+
+  # test to return false when no one has won
+  it "detects when a player has not won" do
+    board = Board.new(6, 7)
+
+    board.drop_piece(0, "R") # place only 3 Rs
+    board.drop_piece(1, "R")
+    board.drop_piece(2, "R")
+
+    expect(board.win?("R")).to eq(false) # 3 Rs not enough for a win
+  end
+
+
+
+
+end # end describe
 
 
 # test command - bundle exec rspec spec/board_spec.rb

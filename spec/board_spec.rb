@@ -218,6 +218,36 @@ describe Board do  # testing the Board class using rspec
     expect(board.win?("R")).to eq(false) # 3 Rs not enough for a win
   end
 
+  # Test to detect a draw
+  it "detects a draw when the board is full and no player has won" do
+    board = Board.new(2, 3) # 2x3 board
+
+    board.drop_piece(0, "R") # fill column 0
+    board.drop_piece(0, "B")
+
+    board.drop_piece(1, "B") # fill column 1
+    board.drop_piece(1, "R")
+
+    board.drop_piece(2, "R") # fill column 2
+    board.drop_piece(2, "B")
+
+    # the board is full and nobody has won
+    expect(board.draw?("R", "B")).to eq(true) #
+  end
+
+  # test that an unfinished game is not a draw
+  it "does not detect a draw when the board is not full" do
+    board = Board.new(6, 7) # standard board
+
+    # we add a few pieces, since we are detecting an unfinished game
+    board.drop_piece(0, "R")
+    board.drop_piece(1, "R")
+
+    # there are still empty spaces, its not a draw
+    expect(board.draw?("R", "B")).to eq(false)
+  end
+
+
 
 
 

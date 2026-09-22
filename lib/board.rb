@@ -37,14 +37,6 @@ class Board
      end
    end
 
-  # short way to check if column is full or not
-  # def column_full?(column)
-  #   board.grid[0][column] != " "
-  # end
-
-
-
-
   # check whether the whole board is full or not
   def full?
     (0...@columns).each do |column| # go thru each column on the board
@@ -125,15 +117,24 @@ class Board
 
   # check whether a player has won in any direction
   def win?(piece)
-    if horizontal_win?(piece) || vertical_win?(piece) || diagonal_win?(piece) # || means OR
-      return true # one type of win was found
+    if horizontal_win?(piece) ||
+       vertical_win?(piece) ||
+       diagonal_win?(piece) # || means OR
+      true # one type of win was found
     else
       false # no type of win was found
     end
-
   end
 
+  # Checks whether the game has ended in a draw
+  def draw?(piece1, piece2)
 
+    return false unless full? # it can not be a draw if the board is not full
+    return false if win?(piece1) # it can not be a draw if player 1 has won
+    return false if win?(piece2) # it can not be a draw if player 2 has won
+
+    true # the board is full and neither player has won
+  end
 
 
 

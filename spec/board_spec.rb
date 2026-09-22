@@ -84,6 +84,81 @@ describe Board do  # testing the Board class using rspec
 
   end
 
+  # test fo detecting when a board is full
+  it "detects when the board is full" do
+
+    board = Board.new(2, 2) # create a small 2x2 board
+
+    board.drop_piece(0, "R") # fill the first column
+    board.drop_piece(0, "B")
+
+    board.drop_piece(1, "B") # fill the second column
+    board.drop_piece(1, "R")
+
+    expect(board.full?).to eq(true)
+  end
+
+  # test that the board knows when it still has empty spaces
+  it "detects when the board is not full" do
+
+    board = Board.new(2, 2)
+
+    board.drop_piece(0, "R") # add only 1 piece
+
+    expect(board.full?).to eq(false)
+  end
+
+  # test for the board to detect a horizontal win
+  it "detects when a horizontal win occurs" do
+    board = Board.new(6, 7) # standard board size
+
+    #place 4 "R" pieces next to each other
+    board.drop_piece(0, "R")
+    board.drop_piece(1, "R")
+    board.drop_piece(2, "R")
+    board.drop_piece(3, "R")
+
+    # R should win if we have 4 consecutive pieces
+    expect(board.horizontal_win?("R")).to eq(true)
+  end
+
+  # test 3 pieces in a row is not a win
+  it "it does not detect a win when we have only 3 pieces" do
+    board = Board.new(6, 7)
+
+    board.drop_piece(0, "R") # only 3 pieces next to each other
+    board.drop_piece(1, "R")
+    board.drop_piece(2, "R")
+
+    expect(board.horizontal_win?("R")).to eq(false) # 3 pieces is not a win, equals to false
+  end
+
+  # test to detect a vertical win
+  it "detects a vertical win" do
+    board = Board.new(6, 7) # 6x7 board
+
+    board.drop_piece(2, "R") # drop 4 pieces vertically in the same column
+    board.drop_piece(2, "R")
+    board.drop_piece(2, "R")
+    board.drop_piece(2, "R")
+
+    expect(board.vertical_win?"R").to eq(true) # 4 Rs should win
+  end
+
+  # test that 3 vertical pieces in a row are not a win
+  it "it does not detect 2 pieces in a row as a win" do
+    board = Board.new(6, 7) # board
+
+    board.drop_piece(2, "R") # drop 3 pieces only in the same column
+    board.drop_piece(2, "R")
+    board.drop_piece(2, "R")
+
+    expect(board.vertical_win?("R")).to eq(false) # 3 pieces is not a win
+  end
+
+
+
+
 end
 
 

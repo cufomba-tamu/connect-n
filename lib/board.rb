@@ -20,8 +20,10 @@ class Board
   end                                                   # {} used for a short 1 line block of code. "do" used for longer
 
   def display_board
+    puts column_header
     @grid.each do |row|  # goes through every row in the array
-      puts "|" + row.join("|") + "|"  # puts vertical bar | between each row/column
+      cells = row.map { |cell| display_cell(cell) }
+      puts "|" + cells.join("|") + "|"  # puts vertical bar | between each row/column
     end
   end
 
@@ -154,6 +156,30 @@ class Board
     return false if win?(piece2) # it can not be a draw if player 2 has won
 
     true # the board is full and neither player has won
+  end
+
+  private
+
+  # A header row of column numbers, aligned above the grid, so players
+  # know what to type — e.g. " 1 2 3 4 5 6 7" for a 7-column board.
+  def column_header
+    ' ' + (1..@columns).map { |number| number.to_s.rjust(cell_width) }.join(' ')
+  end
+
+  # Marks display as a single uppercase letter (e.g. :red -> "R")
+  # instead of the full word, so rows stay compact and readable. This
+  # only changes how a cell is printed — the grid itself still stores
+  # the real mark, and win detection is unaffected.
+  def display_cell(cell)
+    return ' ' * cell_width if cell == ' '
+
+    cell.to_s[0].upcase.rjust(cell_width)
+  end
+
+  # Wide enough for the largest column number, e.g. 2 once there are
+  # 10+ columns, so the header and cells still line up.
+  def cell_width
+    @columns.to_s.length
   end
 
 end # end class board

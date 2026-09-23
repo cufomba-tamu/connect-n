@@ -27,12 +27,28 @@ describe Board do  # testing the Board class using rspec
 
   #####
   # test for displaying the board.. we should see it in the terminal
-  it "displays the board" do
+  it "displays the board with a column-number header" do
     board = Board.new(2, 3)  # creates a 2x3 board.. its simpler to test this case than a bigger 6x7 board
 
     # runs the board display and checks what is printed to the terminal
-    expect {board.display_board}.to output("| | | |\n| | | |\n").to_stdout # to std_out means we expect
-                                                                          # this outcome to be printed to the terminal
+    expect {board.display_board}.to output(" 1 2 3\n| | | |\n| | | |\n").to_stdout
+  end
+
+  it "displays marks as a single uppercase letter, not the full word" do
+    board = Board.new(1, 2)
+    board.drop_piece(0, :red)
+    board.drop_piece(1, :yellow)
+
+    expect {board.display_board}.to output(" 1 2\n|R|Y|\n").to_stdout
+  end
+
+  it "keeps the header aligned with double-digit column numbers" do
+    board = Board.new(1, 10)
+
+    expect {board.display_board}.to output(
+      "  1  2  3  4  5  6  7  8  9 10\n" \
+      "|  |  |  |  |  |  |  |  |  |  |\n"
+    ).to_stdout
   end
 
   # note that when we have 6 rows, we have indexes 0 to 5.. top row 1 is index 0.. bottom row 6 is index 5

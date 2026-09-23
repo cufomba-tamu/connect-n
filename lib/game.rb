@@ -50,7 +50,8 @@ class Game
       if board.win?(player.mark)
         board.display_board
         output.puts "#{player.name} wins!"
-        # TODO: record a win to Scoreboard once it exists (Issue #5)
+        scoreboard&.record_win(player.name)
+        scoreboard&.display(players.map(&:name), output: output)
         return
       end
 
@@ -82,6 +83,13 @@ class Game
 
       output.puts "Please type 'friend' or 'computer'."
     end
+  end
+
+  def ask_player_name(mark, input: $stdin, output: $stdout)
+    default = mark.to_s.capitalize
+    output.print "Enter a name for #{default} (or press Enter for '#{default}'): "
+    raw = input.gets.strip
+    raw.empty? ? default : raw
   end
 
   private

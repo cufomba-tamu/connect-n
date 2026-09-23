@@ -25,6 +25,7 @@ describe Board do  # testing the Board class using rspec
                                           # length checks the amount of columns in that row
   end
 
+  #####
   # test for displaying the board.. we should see it in the terminal
   it "displays the board" do
     board = Board.new(2, 3)  # creates a 2x3 board.. its simpler to test this case than a bigger 6x7 board
@@ -108,6 +109,59 @@ describe Board do  # testing the Board class using rspec
     expect(board.full?).to eq(false)
   end
 
+  # Test win detections.. new
+  # Test that the board accepts a win length of 3
+  it "accepts a win length of 3" do
+    board = Board.new(6, 7, 3) # create a board where 3 pieces are needed to win
+    expect(board.win_length).to eq(3) # check that the win length was stored
+  end
+
+  # Test that the board accepts the default win length of 4
+  it "uses 4 as the default win length" do
+    board = Board.new(6, 7) # create a board without giving a win length
+    expect(board.win_length).to eq(4) # default win length is 4
+  end
+
+  # Test that the board accepts a win length of 10
+  it "accepts a win length of 10" do
+    board = Board.new(10, 10, 10) # 10 pieces are needed to win
+    expect(board.win_length).to eq(10) # check win lenghth of 10
+  end
+
+  # Test that a win length below 3 is rejected
+  it "rejects a win length below 3" do
+    expect { Board.new(6, 7, 2) }.to raise_error(ArgumentError)
+  end
+
+  # Test that a win length above 10 is rejected
+  it "rejects a win length above 10" do
+    expect { Board.new(15, 15, 11) }.to raise_error(ArgumentError)
+  end
+
+  ##### 3 in a row is a win
+  # Test that 3 pieces in a row is a win when win length is 3
+  it "detects a horizontal win with 3 pieces when win length is 3" do
+    board = Board.new(6, 7, 3)
+
+    board.drop_piece(0, "R")
+    board.drop_piece(1, "R")
+    board.drop_piece(2, "R")
+
+    expect(board.horizontal_win?("R")).to eq(true)
+  end
+
+  # Test that 10 pieces in a row is a win when win length is 10
+  it "detects a horizontal win with 10 pieces when win length is 10" do
+    board = Board.new(10, 15, 10)
+
+    # Drop 10 matching pieces across the bottom row
+    (0..9).each do |column|
+      board.drop_piece(column, "R")
+    end
+
+    expect(board.horizontal_win?("R")).to eq(true)
+  end
+
   # test for the board to detect a horizontal win
   it "detects when a horizontal win occurs" do
     board = Board.new(6, 7) # standard board size
@@ -155,8 +209,31 @@ describe Board do  # testing the Board class using rspec
 
     expect(board.vertical_win?("R")).to eq(false) # 3 pieces is not a win
   end
+  ####
+  # Test that 3 pieces vertically is a win when win length is 3
+  it "detects a vertical win with 3 pieces when win length is 3" do
+    board = Board.new(6, 7, 3)
+
+    board.drop_piece(2, "R")
+    board.drop_piece(2, "R")
+    board.drop_piece(2, "R")
+
+    expect(board.vertical_win?("R")).to eq(true)
+  end
+
+  # Test that 10 pieces vertically is a win when win length is 10
+  it "detects a vertical win with 10 pieces when win length is 10" do
+    board = Board.new(10, 15, 10)
+
+    # Drop 10 matching pieces into the same column
+    10.times do
+      board.drop_piece(3, "R")
+    end
+    expect(board.vertical_win?("R")).to eq(true)
+  end
 
 
+  ####
   # test diagonal win going left to the right side (\)
   it "detects a diagonal win a diagonal win going down right" do
     board = Board.new(6, 7)
@@ -184,7 +261,7 @@ describe Board do  # testing the Board class using rspec
   end
 
 
-  # test that 3 diagonal pieces are not enough
+  # test that 3 diagonal pieces are not enough to win
   it "does not detect a diagonal win if we have 3 pieces only" do
   board = Board.new(6, 7)
 
@@ -194,6 +271,56 @@ describe Board do  # testing the Board class using rspec
 
   expect(board.diagonal_win?("R")).to eq(false)
   end
+  #######
+  # Test that 3 diagonal pieces is a win when win length is 3.. left to right(\)
+  it "detects a diagonal win with 3 pieces when win length is 3" do
+    board = Board.new(6, 7, 3)
+
+    board.grid[2][0] = "R"
+    board.grid[3][1] = "R"
+    board.grid[4][2] = "R"
+
+    expect(board.diagonal_win?("R")).to eq(true)
+  end
+
+
+  # Test that 10 diagonal pieces is a win when win length is 10.. left to right (\)
+  it "detects a diagonal win with 10 pieces when win length is 10" do
+    board = Board.new(15, 15, 10)
+
+    # create a left to right diagonal of 10 pieces (\)
+    (0...10).each do |position| # go thru numbers 0 to 9, and
+      board.grid[position][position] = "R" # use each number as both row index and the column index
+    end
+    expect(board.diagonal_win?("R")).to eq(true)
+  end
+  #####
+  # Test that win? detects a Connect 3 win
+  it "detects a win when win length is 3" do
+    board = Board.new(6, 7, 3)
+
+    board.drop_piece(0, "R")
+    board.drop_piece(1, "R")
+    board.drop_piece(2, "R")
+
+    expect(board.win?("R")).to eq(true)
+  end
+
+  # Test that win? detects a Connect 10 win
+  it "detects a win when win length is 10" do
+    board = Board.new(15, 15, 10)
+
+    # Create 10 matching pieces horizontally
+    (0...10).each do |column|
+      board.drop_piece(column, "R")
+    end
+    expect(board.win?("R")).to eq(true)
+  end
+
+
+
+
+  #######
 
   # test to check a win in any direction
   it "detects a win in any direction" do
@@ -246,9 +373,21 @@ describe Board do  # testing the Board class using rspec
     # there are still empty spaces, its not a draw
     expect(board.draw?("R", "B")).to eq(false)
   end
+  #####
+  # Test that a full board is not a draw if someone wins
+  it "does not detect a draw when a player has won with win length 3" do
+    board = Board.new(3, 3, 3)
 
+    # Fill the board
+    board.grid[0] = ["R", "B", "B"]
+    board.grid[1] = ["R", "B", "R"]
+    board.grid[2] = ["R", "R", "B"]
 
+    # Player R has 3 vertically in column 0
+    expect(board.draw?("R", "B")).to eq(false)
+  end
 
+  ####
 
 
 end # end describe

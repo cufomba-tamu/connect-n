@@ -12,7 +12,7 @@ board.drop_piece(4, "B")
 # display the board
 board.display_board # displays the board in the terminal
 
-#############################################
+puts "========================================="
 
 # display the player scores in the terminal
 scoreboard = ScoreBoard.new

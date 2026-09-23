@@ -1,10 +1,18 @@
 # frozen_string_literal: true
 class Board
-  attr_accessor :rows, :columns, :grid  # we create the getter and setter methods
+  attr_accessor :rows, :columns, :grid, :win_length  # we create the getter and setter methods
 
-  def initialize(rows, columns)
+  def initialize(rows, columns, win_length = 4)
+
+    # Reject win lengths smaller than 3 or larger than 10
+    if win_length < 3 || win_length > 10
+      raise ArgumentError, "Win length must be between 3 and 10"
+    end
+
+
     @rows = rows  # board remembers the rows and columns requested... @ means instance variable
     @columns = columns
+    @win_length = win_length
 
     # create an empty game board using the rows & columns
     # use ruby's Array class to create a new array... Array.new(aaa) creates each individual row/column
@@ -50,71 +58,83 @@ class Board
   end
 
   # Checks whether a player has 4 horizontal pieces in a row
+  # Checks whether a player has enough pieces in a row horizontally
   def horizontal_win?(piece)
-    @grid.each do |row| # go thru each row on the grid
-      (0..@columns - 4).each do |column| # go thru the possible starting positions
+    @grid.each do |row| # go thru each row on the board
+      count = 0 # count consecutive matching pieces/letters
+      row.each do |cell|  # go through each cell in the current row
 
-        # check the 4 spaces next to each other if they have the same piece eg R
-        if row[column] == piece &&
-           row[column + 1] == piece &&
-           row[column + 2] == piece &&
-           row[column + 3] == piece
-          return true # 4 consecutive pieces means we have a winner
+        if cell == piece # check whether a cell contains a piece
+          count += 1  # add 1 to the consecutive count
+        else
+          count = 0 # the streak was broken, so start counting again
         end
+        return true if count >= @win_length  # return true when the required win length is reached
       end
     end
-    false # false if no 4 consecutive pieces
+    false # no horizontal winning streak was found
   end
 
 
+  ####
   # Checks for 4 consecutive Vertical pieces
+  # Checks whether a player has enough pieces in a row vertically
   def vertical_win?(piece)
-    (0...@columns).each do |column| # go through each column
-      (0..@rows - 4).each do |row| # go thru possible starting rows
+    (0...@columns).each do |column| # go thru each column on the board
+      count = 0 # count matching pieces on top of each other
+      (0...@rows).each do |row| # go thru each row in the current column
 
-        # check if we have 4 spaces below each other
-        # vertical changes the row, while keeping the same column
-        if @grid[row][column] == piece &&
-           @grid[row + 1][column] == piece &&
-           @grid[row + 2][column] == piece &&
-           @grid[row + 3][column] == piece
-          return true # true if we have 4 spaces
+        if @grid[row][column] == piece # check if the cell has the player's piece
+          count += 1  # add 1 to the current streak
+        else
+          count = 0 # the streak is broken, so start over from 0
         end
+        return true if count >= @win_length # return true if the required win length is reached
       end
     end
-    false # if we dont have 4 vertical pieces
+    false # no vertical win was found
   end
 
+  ###########################
 
   # checks for 4 diagonal pieces from left to right
+  # Checks whether a player has enough pieces in a row diagonally
   def diagonal_win?(piece)
-    (0..@rows - 4).each do |row| # go thru the row for a possible start of 4 pieces
-      (0..@columns - 4).each do |column| # go thru the column for start of right diagonal
+    # diagonal win from left to right (downright \)
 
-        if @grid[row][column] == piece && # check if starting row contains a piece eg R
-           @grid[row + 1][column + 1] == piece && # move down 1 row and right 1 column and check for same piece
-           @grid[row + 2][column + 2] == piece &&
-           @grid[row + 3][column + 3] == piece
-          return true # true if all 4 positions contain the same piece
+    (0...@rows).each do |row| # go through each possible starting row
+      (0...@columns).each do |column|
+        count = 0 # count matching diagonal pieces
+
+        # Start from this position and move to the right side
+        while row + count < @rows &&
+              column + count < @columns &&
+              @grid[row + count][column + count] == piece
+          count += 1  # add 1 to the diagonal streak
+          return true if count >= @win_length # return true once the required win length is reached
         end
       end
     end
 
-    # check for diagonal going from right to left
-    (0..@rows - 4).each do |row| # going through every possible starting position
-      (3...@columns).each do |column| # start from 3 bcoz we need enough space to move 3 columns to the first
+    # diagonal win from right to left (Down left /)
 
-        if @grid[row][column] == piece && # +1, +1 = down & right... +1, -1= down & left
-           @grid[row + 1][column - 1] == piece &&
-           @grid[row + 2][column - 2] == piece &&
-           @grid[row + 3][column - 3] == piece
-          return true # true if we have 4 consecutive pieces diagonally
+    (0...@rows).each do |row| # go thru each possible starting row
+      (0...@columns).each do |column|
+        count = 0
+
+        # Start from this position and move to the left
+        while row + count < @rows &&
+              column - count >= 0 &&
+              @grid[row + count][column - count] == piece
+          count += 1 # add 1
+          return true if count >= @win_length # return true once the required win length is reached
         end
       end
     end
-    false # no diagonal win
+    false # no diagonal win was found
   end
 
+  ##################################
   # check whether a player has won in any direction
   def win?(piece)
     if horizontal_win?(piece) ||

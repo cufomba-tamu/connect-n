@@ -66,4 +66,96 @@ describe Game do
 
     expect(output.string).to include('Thanks for playing!')
   end
+
+  describe '#play' do
+    let(:players) do
+      [
+        Player.new(name: 'Alice', mark: :red),
+        Player.new(name: 'Bob', mark: :yellow)
+      ]
+    end
+
+    it 'ends the game and announces the winner once a player connects 4' do
+      game = Game.new
+      # Alice drops in columns 1-4 (a horizontal win); Bob drops in column 7
+      # each time so his pieces stay out of the way.
+      moves = %w[1 7 2 7 3 7 4]
+      input = StringIO.new(moves.join("\n") + "\n")
+      output = StringIO.new
+
+      game.play(players, board, input: input, output: output)
+
+      expect(output.string).to include('Alice wins!')
+    end
+
+    it "announces a draw when the board fills with no winner" do
+      game = Game.new
+      small_board = Board.new(2, 2) # tiny board, easy to fill without a win
+
+      # Alice and Bob alternate columns so neither gets 2-in-a-row anywhere.
+      moves = %w[1 1 2 2]
+      input = StringIO.new(moves.join("\n") + "\n")
+      output = StringIO.new
+
+      game.play(players, small_board, input: input, output: output)
+
+      expect(output.string).to include("It's a draw!")
+    end
+
+    it 'keeps alternating turns when no one has won yet' do
+      game = Game.new
+      # Alice and Bob each drop once, nowhere near a win; then Alice quits.
+      input = StringIO.new("1\n2\nq\n")
+      output = StringIO.new
+
+      expect {
+        game.play(players, board, input: input, output: output)
+      }.to raise_error(SystemExit)
+
+      expect(output.string).to include('Bob, choose a column')
+    end
+  end
+end
+
+describe '#ask_dimensions' do
+  it 'returns a derived board size for the default win length' do
+    game = Game.new
+    input = StringIO.new("\n")
+    output = StringIO.new
+
+    result = game.ask_dimensions(input: input, output: output)
+
+    expect(result).to eq([6, 7, 4]) # rows, columns, win_length
+  end
+
+  it 'derives board size from a custom win length' do
+    game = Game.new
+    input = StringIO.new("5\n")
+    output = StringIO.new
+
+    result = game.ask_dimensions(input: input, output: output)
+
+    expect(result).to eq([7, 9, 5])
+  end
+
+  it 'rejects a win length above the max, then accepts a valid one' do
+    game = Game.new
+    input = StringIO.new("100000000000\n4\n")
+    output = StringIO.new
+
+    result = game.ask_dimensions(input: input, output: output)
+
+    expect(result).to eq([6, 7, 4])
+    expect(output.string).to include('Please enter a number between 3 and 10.')
+  end
+
+  it 'rejects a win length below the min, then accepts a valid one' do
+    game = Game.new
+    input = StringIO.new("1\n4\n")
+    output = StringIO.new
+
+    result = game.ask_dimensions(input: input, output: output)
+
+    expect(result).to eq([6, 7, 4])
+  end
 end

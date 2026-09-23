@@ -254,4 +254,4 @@ describe Board do  # testing the Board class using rspec
 end # end describe
 
 
-# test command - bundle exec rspec spec/board_spec.rb
+# test - bundle exec rspec spec/board_spec.rb

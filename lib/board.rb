@@ -136,6 +136,4 @@ class Board
     true # the board is full and neither player has won
   end
 
-
-
 end # end class board

@@ -1,4 +1,5 @@
 require_relative "lib/board"
+require_relative "lib/scoreboard"
 
 board = Board.new(6, 7)
 

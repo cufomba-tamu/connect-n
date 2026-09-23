@@ -179,3 +179,40 @@ describe '#ask_dimensions' do
     expect(result).to eq([6, 7, 4])
   end
 end
+
+describe '#ask_opponent_type' do
+  it 'defaults to a human friend on blank input' do
+    game = Game.new
+    input = StringIO.new("\n")
+    output = StringIO.new
+
+    expect(game.ask_opponent_type(input: input, output: output)).to eq(:friend)
+  end
+
+  it 'returns :friend when the player types "friend"' do
+    game = Game.new
+    input = StringIO.new("friend\n")
+    output = StringIO.new
+
+    expect(game.ask_opponent_type(input: input, output: output)).to eq(:friend)
+  end
+
+  it 'returns :computer when the player types "computer"' do
+    game = Game.new
+    input = StringIO.new("computer\n")
+    output = StringIO.new
+
+    expect(game.ask_opponent_type(input: input, output: output)).to eq(:computer)
+  end
+
+  it 'reprompts on an unrecognized answer, then accepts a valid one' do
+    game = Game.new
+    input = StringIO.new("dog\ncomputer\n")
+    output = StringIO.new
+
+    result = game.ask_opponent_type(input: input, output: output)
+
+    expect(result).to eq(:computer)
+    expect(output.string).to include("Please type 'friend' or 'computer'.")
+  end
+end

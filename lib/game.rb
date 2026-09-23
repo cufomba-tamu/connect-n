@@ -72,6 +72,18 @@ class Game
     [rows, columns, win_length]
   end
 
+  def ask_opponent_type(input: $stdin, output: $stdout)
+    loop do
+      output.print "Play against a friend or the computer? [friend]: "
+      raw = input.gets.strip.downcase
+
+      return :friend if raw.empty? || raw == 'friend' || raw == 'f'
+      return :computer if raw == 'computer' || raw == 'c'
+
+      output.puts "Please type 'friend' or 'computer'."
+    end
+  end
+
   private
 
   def ask_win_length(input:, output:, default: 4, min: 3, max: 10)

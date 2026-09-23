@@ -3,7 +3,6 @@ AllCops:
   SuggestExtensions: false
   Exclude:
     - 'coverage/**/*'
-    - 'main.rb' # pre-existing scratch/demo script, not part of the real app
 
 # A small class-per-file student project — file/method names already
 # say what a class is for, so a mandatory doc comment above every

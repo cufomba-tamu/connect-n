@@ -1,6 +1,9 @@
-source "https://rubygems.org"
+# frozen_string_literal: true
 
-ruby "4.0.6"
+source 'https://rubygems.org'
 
-gem "rspec"
-gem "simplecov", require: false
+ruby '4.0.6'
+
+gem 'rspec'
+gem 'rubocop', require: false
+gem 'simplecov', require: false

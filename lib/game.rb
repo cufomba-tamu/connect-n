@@ -40,26 +40,10 @@ class Game
       player = players[current]
       opponent = players[(current + 1) % players.size]
 
-      column = if player.is_a?(ComputerPlayer)
-                 player.choose_move(board, opponent.mark)
-               else
-                 ask_column(player, board, input: input, output: output)
-               end
+      column = choose_column(player, opponent, board, input: input, output: output)
       board.drop_piece(column, player.mark)
 
-      if board.win?(player.mark)
-        board.display_board
-        output.puts "#{player.name} wins!"
-        scoreboard&.record_win(player.name)
-        scoreboard&.display(players.map(&:name), output: output)
-        return
-      end
-
-      if board.draw?(players[0].mark, players[1].mark)
-        board.display_board
-        output.puts "It's a draw!"
-        return
-      end
+      return if game_over?(player, players, board, output: output, scoreboard: scoreboard)
 
       current = (current + 1) % players.size
     end
@@ -75,11 +59,11 @@ class Game
 
   def ask_opponent_type(input: $stdin, output: $stdout)
     loop do
-      output.print "Play against a friend or the computer? [friend]: "
+      output.print 'Play against a friend or the computer? [friend]: '
       raw = input.gets.strip.downcase
 
       return :friend if raw.empty? || raw == 'friend' || raw == 'f'
-      return :computer if raw == 'computer' || raw == 'c'
+      return :computer if %w[computer c].include?(raw)
 
       output.puts "Please type 'friend' or 'computer'."
     end
@@ -93,6 +77,32 @@ class Game
   end
 
   private
+
+  def choose_column(player, opponent, board, input:, output:)
+    if player.is_a?(ComputerPlayer)
+      player.choose_move(board, opponent.mark)
+    else
+      ask_column(player, board, input: input, output: output)
+    end
+  end
+
+  def game_over?(player, players, board, output:, scoreboard:)
+    if board.win?(player.mark)
+      board.display_board
+      output.puts "#{player.name} wins!"
+      scoreboard&.record_win(player.name)
+      scoreboard&.display(players.map(&:name), output: output)
+      return true
+    end
+
+    if board.draw?(players[0].mark, players[1].mark)
+      board.display_board
+      output.puts "It's a draw!"
+      return true
+    end
+
+    false
+  end
 
   def ask_win_length(input:, output:, default: 4, min: 3, max: 10)
     loop do

@@ -39,9 +39,18 @@ class Game
       column = ask_column(player, board, input: input, output: output)
       board.drop_piece(column, player.mark)
 
-      # TODO: check for a win here once Board exposes win detection (Issue #2)
-      # TODO: check for a draw here once Board exposes that (Issue #12)
-      # TODO: record a win to Scoreboard once it exists (Issue #5)
+      if board.win?(player.mark)
+        board.display_board
+        output.puts "#{player.name} wins!"
+        # TODO: record a win to Scoreboard once it exists (Issue #5)
+        return
+      end
+
+      if board.draw?(players[0].mark, players[1].mark)
+        board.display_board
+        output.puts "It's a draw!"
+        return
+      end
 
       current = (current + 1) % players.size
     end

@@ -116,3 +116,46 @@ describe Game do
     end
   end
 end
+
+describe '#ask_dimensions' do
+  it 'returns a derived board size for the default win length' do
+    game = Game.new
+    input = StringIO.new("\n")
+    output = StringIO.new
+
+    result = game.ask_dimensions(input: input, output: output)
+
+    expect(result).to eq([6, 7, 4]) # rows, columns, win_length
+  end
+
+  it 'derives board size from a custom win length' do
+    game = Game.new
+    input = StringIO.new("5\n")
+    output = StringIO.new
+
+    result = game.ask_dimensions(input: input, output: output)
+
+    expect(result).to eq([7, 9, 5])
+  end
+
+  it 'rejects a win length above the max, then accepts a valid one' do
+    game = Game.new
+    input = StringIO.new("100000000000\n4\n")
+    output = StringIO.new
+
+    result = game.ask_dimensions(input: input, output: output)
+
+    expect(result).to eq([6, 7, 4])
+    expect(output.string).to include('Please enter a number between 3 and 10.')
+  end
+
+  it 'rejects a win length below the min, then accepts a valid one' do
+    game = Game.new
+    input = StringIO.new("1\n4\n")
+    output = StringIO.new
+
+    result = game.ask_dimensions(input: input, output: output)
+
+    expect(result).to eq([6, 7, 4])
+  end
+end

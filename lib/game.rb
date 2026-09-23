@@ -55,4 +55,33 @@ class Game
       current = (current + 1) % players.size
     end
   end
+
+  def ask_dimensions(input: $stdin, output: $stdout)
+    output.puts 'Configure your board — how many pieces in a row wins?'
+    win_length = ask_win_length(input: input, output: output)
+    columns = (2 * win_length) - 1
+    rows = win_length + 2
+    [rows, columns, win_length]
+  end
+
+  private
+
+  def ask_win_length(input:, output:, default: 4, min: 3, max: 10)
+    loop do
+      output.print "Connect how many in a row? [#{default}]: "
+      raw = input.gets.strip
+      return default if raw.empty?
+
+      begin
+        win_length = Integer(raw)
+      rescue ArgumentError
+        output.puts 'Please enter a whole number.'
+        next
+      end
+
+      return win_length if win_length.between?(min, max)
+
+      output.puts "Please enter a number between #{min} and #{max}."
+    end
+  end
 end

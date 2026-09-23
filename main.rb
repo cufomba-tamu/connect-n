@@ -15,19 +15,19 @@ board.display_board # displays the board in the terminal
 puts "========================================="
 
 # display the player scores in the terminal
-scoreboard = ScoreBoard.new
+scoreboard = ScoreBoard.new(file_path: "tmp_demo_scoreboard.json")
 
 puts "Starting Score:" # Display the starting score
-scoreboard.display
+scoreboard.display(["Player 1", "Player 2"])
 
-scoreboard.add_player1_win # give player 1 a win
+scoreboard.record_win("Player 1") # give player 1 a win
 
 # display the updated score
 puts "\nAfter Player 1 wins:"
-scoreboard.display
+scoreboard.display(["Player 1", "Player 2"])
 
-scoreboard.add_player2_win # give player 2 a win
+scoreboard.record_win("Player 2") # give player 2 a win
 
 # display the updated score
 puts "\nAfter Player 2 wins:"
-scoreboard.display
+scoreboard.display(["Player 1", "Player 2"])

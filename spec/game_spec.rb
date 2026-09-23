@@ -4,7 +4,9 @@ require_relative '../lib/game'
 require_relative '../lib/player'
 require_relative '../lib/computer_player'
 require_relative '../lib/board'
+require_relative '../lib/scoreboard'
 require 'stringio'
+require 'tempfile'
 
 describe Game do
   let(:board) { Board.new(6, 7) }
@@ -133,6 +135,48 @@ describe Game do
       game.play(computer_players, tiny_board, input: input, output: output)
 
       expect(output.string).to include("It's a draw!")
+    end
+
+    it 'records a win to the scoreboard when one is given' do
+      game = Game.new
+      scoreboard = ScoreBoard.new(file_path: Tempfile.new('scoreboard').path)
+      moves = %w[1 7 2 7 3 7 4]
+      input = StringIO.new(moves.join("\n") + "\n")
+      output = StringIO.new
+
+      game.play(players, board, input: input, output: output, scoreboard: scoreboard)
+
+      expect(scoreboard.wins_for('Alice')).to eq(1)
+      expect(output.string).to include('Alice: 1 wins')
+    end
+
+    it 'does not touch the scoreboard when none is given' do
+      game = Game.new
+      moves = %w[1 7 2 7 3 7 4]
+      input = StringIO.new(moves.join("\n") + "\n")
+      output = StringIO.new
+
+      expect {
+        game.play(players, board, input: input, output: output)
+      }.not_to raise_error
+    end
+  end
+
+  describe '#ask_player_name' do
+    it 'returns the typed name' do
+      game = Game.new
+      input = StringIO.new("Alice\n")
+      output = StringIO.new
+
+      expect(game.ask_player_name(:red, input: input, output: output)).to eq('Alice')
+    end
+
+    it "defaults to the mark's capitalized name on blank input" do
+      game = Game.new
+      input = StringIO.new("\n")
+      output = StringIO.new
+
+      expect(game.ask_player_name(:yellow, input: input, output: output)).to eq('Yellow')
     end
   end
 end

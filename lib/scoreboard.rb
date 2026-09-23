@@ -1,28 +1,48 @@
+# frozen_string_literal: true
+
+require 'json'
+
+# Tracks wins per player name, persisted to a JSON file so counts
+# survive between separate runs of the app. Keyed by name rather than
+# a fixed player1/player2 slot, since who plays which mark can change
+# from session to session.
 class ScoreBoard
-  # lets other classes both players wins
-  attr_reader :player1_wins, :player2_wins
+  DEFAULT_FILE_PATH = File.expand_path('../../scoreboard.json', __FILE__)
 
-  def initialize # create a new scoreboard
-    @player1_wins = 0 # starts session with zero wins
-    @player2_wins = 0
+  def initialize(file_path: DEFAULT_FILE_PATH)
+    @file_path = file_path
+    @wins = load_wins
   end
 
-  def add_player1_win # adds one win to player1
-    @player1_wins += 1 # increase player1 wins by one
+  # A player with no recorded wins has 0, not an error.
+  def wins_for(name)
+    @wins[name] || 0
   end
 
-  def add_player2_win # adds one win to player2
-    @player2_wins += 1 # increase player2 wins by one
+  # Records a win and writes it to disk immediately, so it isn't lost
+  # if the app exits right after.
+  def record_win(name)
+    @wins[name] = wins_for(name) + 1
+    save_wins
   end
 
-  # display the current score for both players...
-  # use string interpolation, #{@player_x}, simple way to put variable inside a string
-  def display
-    puts "Player 1: #{@player1_wins} wins" # prints player 1 number of wins
-    puts "Player 2: #{@player2_wins} wins"
+  def display(names, output: $stdout)
+    names.each do |name|
+      output.puts "#{name}: #{wins_for(name)} wins"
+    end
   end
 
+  private
 
+  def load_wins
+    return {} unless File.exist?(@file_path)
 
-end # end class
+    JSON.parse(File.read(@file_path))
+  rescue JSON::ParserError
+    {}
+  end
 
+  def save_wins
+    File.write(@file_path, JSON.generate(@wins))
+  end
+end

@@ -1,41 +1,53 @@
+# frozen_string_literal: true
+
 require_relative "../lib/scoreboard"
+require "tempfile"
 
 describe ScoreBoard do
+  # Each example gets its own temp file so tests never touch the real
+  # scoreboard.json or leak state into each other.
+  let(:file_path) { Tempfile.new("scoreboard").path }
+  let(:scoreboard) { ScoreBoard.new(file_path: file_path) }
 
-  # test that both players start with zero wins
-  it "starts both players with zero wins" do
-
-    scoreboard = ScoreBoard.new # create a scoreboard
-    # player 1 and 2 start with zero wins
-    expect(scoreboard.player1_wins).to eq(0)
-    expect(scoreboard.player2_wins).to eq(0)
+  it "shows zero wins for a player with no recorded wins" do
+    expect(scoreboard.wins_for("Alice")).to eq(0)
   end
 
-  # test that scoreboard can add a win for player 1
-  it "adds a win for player 1" do
-    scoreboard = ScoreBoard.new # create a new scoreboard
-    scoreboard.add_player1_win # give player1, one win
-    expect(scoreboard.player1_wins).to eq(1) # player1 should now have one win
+  it "records a win for a player by name" do
+    scoreboard.record_win("Alice")
+
+    expect(scoreboard.wins_for("Alice")).to eq(1)
   end
 
-  # test that scoreboard can add a win for player 2
-  it "adds a win for player 2" do
-    scoreboard = ScoreBoard.new # create a new scoreboard
-    scoreboard.add_player2_win # give player2, one win
-    expect(scoreboard.player2_wins).to eq(1) # player2 should now have one win
+  it "keeps each player's wins separate" do
+    scoreboard.record_win("Alice")
+    scoreboard.record_win("Alice")
+    scoreboard.record_win("Bob")
+
+    expect(scoreboard.wins_for("Alice")).to eq(2)
+    expect(scoreboard.wins_for("Bob")).to eq(1)
   end
 
-  # test that scoreboard displays both players wins
-  it "display both players current wins" do
-    scoreboard = ScoreBoard.new # create new scoreboard
-    scoreboard.add_player1_win # give one win to player1
+  it "persists wins across separate instances (closing and reopening the app)" do
+    scoreboard.record_win("Alice")
 
-    # check what the scoreboard displays
-    expect { scoreboard.display }.to output("Player 1: 1 wins\nPlayer 2: 0 wins\n").to_stdout
+    reloaded = ScoreBoard.new(file_path: file_path)
+
+    expect(reloaded.wins_for("Alice")).to eq(1)
   end
 
+  it "displays each given player's current wins, including zero" do
+    scoreboard.record_win("Alice")
 
-end # end describe
+    expect { scoreboard.display(%w[Alice Bob]) }
+      .to output("Alice: 1 wins\nBob: 0 wins\n").to_stdout
+  end
 
+  it "starts fresh with no wins when the file doesn't exist yet" do
+    missing_path = "#{file_path}-does-not-exist"
 
-# test - bundle exec rspec spec/scoreboard_spec.rb
+    fresh_scoreboard = ScoreBoard.new(file_path: missing_path)
+
+    expect(fresh_scoreboard.wins_for("Alice")).to eq(0)
+  end
+end

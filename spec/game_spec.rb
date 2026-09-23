@@ -2,6 +2,7 @@
 
 require_relative '../lib/game'
 require_relative '../lib/player'
+require_relative '../lib/computer_player'
 require_relative '../lib/board'
 require 'stringio'
 
@@ -114,6 +115,25 @@ describe Game do
 
       expect(output.string).to include('Bob, choose a column')
     end
+
+    it 'lets a computer player take its turns without reading input' do
+      game = Game.new
+      computer_players = [
+        Player.new(name: 'Alice', mark: :red),
+        ComputerPlayer.new(name: 'Computer', mark: :yellow)
+      ]
+      # A 2x2 board can never satisfy a 4-in-a-row win, so it always ends
+      # in a draw once full — exactly 2 human inputs are needed to fill
+      # Alice's turns; the other 2 drops are the computer's, with no
+      # input consumed for them.
+      tiny_board = Board.new(2, 2)
+      input = StringIO.new("1\n2\n")
+      output = StringIO.new
+
+      game.play(computer_players, tiny_board, input: input, output: output)
+
+      expect(output.string).to include("It's a draw!")
+    end
   end
 end
 
@@ -157,5 +177,42 @@ describe '#ask_dimensions' do
     result = game.ask_dimensions(input: input, output: output)
 
     expect(result).to eq([6, 7, 4])
+  end
+end
+
+describe '#ask_opponent_type' do
+  it 'defaults to a human friend on blank input' do
+    game = Game.new
+    input = StringIO.new("\n")
+    output = StringIO.new
+
+    expect(game.ask_opponent_type(input: input, output: output)).to eq(:friend)
+  end
+
+  it 'returns :friend when the player types "friend"' do
+    game = Game.new
+    input = StringIO.new("friend\n")
+    output = StringIO.new
+
+    expect(game.ask_opponent_type(input: input, output: output)).to eq(:friend)
+  end
+
+  it 'returns :computer when the player types "computer"' do
+    game = Game.new
+    input = StringIO.new("computer\n")
+    output = StringIO.new
+
+    expect(game.ask_opponent_type(input: input, output: output)).to eq(:computer)
+  end
+
+  it 'reprompts on an unrecognized answer, then accepts a valid one' do
+    game = Game.new
+    input = StringIO.new("dog\ncomputer\n")
+    output = StringIO.new
+
+    result = game.ask_opponent_type(input: input, output: output)
+
+    expect(result).to eq(:computer)
+    expect(output.string).to include("Please type 'friend' or 'computer'.")
   end
 end

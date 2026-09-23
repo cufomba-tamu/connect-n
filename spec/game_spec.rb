@@ -2,6 +2,7 @@
 
 require_relative '../lib/game'
 require_relative '../lib/player'
+require_relative '../lib/computer_player'
 require_relative '../lib/board'
 require 'stringio'
 
@@ -113,6 +114,25 @@ describe Game do
       }.to raise_error(SystemExit)
 
       expect(output.string).to include('Bob, choose a column')
+    end
+
+    it 'lets a computer player take its turns without reading input' do
+      game = Game.new
+      computer_players = [
+        Player.new(name: 'Alice', mark: :red),
+        ComputerPlayer.new(name: 'Computer', mark: :yellow)
+      ]
+      # A 2x2 board can never satisfy a 4-in-a-row win, so it always ends
+      # in a draw once full — exactly 2 human inputs are needed to fill
+      # Alice's turns; the other 2 drops are the computer's, with no
+      # input consumed for them.
+      tiny_board = Board.new(2, 2)
+      input = StringIO.new("1\n2\n")
+      output = StringIO.new
+
+      game.play(computer_players, tiny_board, input: input, output: output)
+
+      expect(output.string).to include("It's a draw!")
     end
   end
 end

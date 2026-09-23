@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'computer_player'
+
 class Game
   def ask_column(player, board, input: $stdin, output: $stdout)
     loop do
@@ -36,7 +38,13 @@ class Game
     loop do
       board.display_board
       player = players[current]
-      column = ask_column(player, board, input: input, output: output)
+      opponent = players[(current + 1) % players.size]
+
+      column = if player.is_a?(ComputerPlayer)
+                 player.choose_move(board, opponent.mark)
+               else
+                 ask_column(player, board, input: input, output: output)
+               end
       board.drop_piece(column, player.mark)
 
       if board.win?(player.mark)

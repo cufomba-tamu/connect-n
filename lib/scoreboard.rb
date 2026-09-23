@@ -7,7 +7,7 @@ require 'json'
 # a fixed player1/player2 slot, since who plays which mark can change
 # from session to session.
 class ScoreBoard
-  DEFAULT_FILE_PATH = File.expand_path('../../scoreboard.json', __FILE__)
+  DEFAULT_FILE_PATH = File.expand_path('../scoreboard.json', __dir__)
 
   def initialize(file_path: DEFAULT_FILE_PATH)
     @file_path = file_path

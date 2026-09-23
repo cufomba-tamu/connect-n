@@ -63,9 +63,9 @@ describe Game do
     input = StringIO.new("q\n")
     output = StringIO.new
 
-    expect {
+    expect do
       game.ask_column(player, board, input: input, output: output)
-    }.to raise_error(SystemExit)
+    end.to raise_error(SystemExit)
 
     expect(output.string).to include('Thanks for playing!')
   end
@@ -83,7 +83,7 @@ describe Game do
       # Alice drops in columns 1-4 (a horizontal win); Bob drops in column 7
       # each time so his pieces stay out of the way.
       moves = %w[1 7 2 7 3 7 4]
-      input = StringIO.new(moves.join("\n") + "\n")
+      input = StringIO.new("#{moves.join("\n")}\n")
       output = StringIO.new
 
       game.play(players, board, input: input, output: output)
@@ -91,13 +91,13 @@ describe Game do
       expect(output.string).to include('Alice wins!')
     end
 
-    it "announces a draw when the board fills with no winner" do
+    it 'announces a draw when the board fills with no winner' do
       game = Game.new
       small_board = Board.new(2, 2) # tiny board, easy to fill without a win
 
       # Alice and Bob alternate columns so neither gets 2-in-a-row anywhere.
       moves = %w[1 1 2 2]
-      input = StringIO.new(moves.join("\n") + "\n")
+      input = StringIO.new("#{moves.join("\n")}\n")
       output = StringIO.new
 
       game.play(players, small_board, input: input, output: output)
@@ -111,9 +111,9 @@ describe Game do
       input = StringIO.new("1\n2\nq\n")
       output = StringIO.new
 
-      expect {
+      expect do
         game.play(players, board, input: input, output: output)
-      }.to raise_error(SystemExit)
+      end.to raise_error(SystemExit)
 
       expect(output.string).to include('Bob, choose a column')
     end
@@ -141,7 +141,7 @@ describe Game do
       game = Game.new
       scoreboard = ScoreBoard.new(file_path: Tempfile.new('scoreboard').path)
       moves = %w[1 7 2 7 3 7 4]
-      input = StringIO.new(moves.join("\n") + "\n")
+      input = StringIO.new("#{moves.join("\n")}\n")
       output = StringIO.new
 
       game.play(players, board, input: input, output: output, scoreboard: scoreboard)
@@ -153,12 +153,12 @@ describe Game do
     it 'does not touch the scoreboard when none is given' do
       game = Game.new
       moves = %w[1 7 2 7 3 7 4]
-      input = StringIO.new(moves.join("\n") + "\n")
+      input = StringIO.new("#{moves.join("\n")}\n")
       output = StringIO.new
 
-      expect {
+      expect do
         game.play(players, board, input: input, output: output)
-      }.not_to raise_error
+      end.not_to raise_error
     end
   end
 

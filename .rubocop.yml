@@ -1,0 +1,42 @@
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - 'coverage/**/*'
+    - 'main.rb' # pre-existing scratch/demo script, not part of the real app
+
+# A small class-per-file student project — file/method names already
+# say what a class is for, so a mandatory doc comment above every
+# class adds noise rather than useful context.
+Style/Documentation:
+  Enabled: false
+
+# Game#ask_column is a single readable sequence of guard clauses
+# (quit / numeric / range / full-column); splitting it further would
+# add indirection without making it any clearer.
+Metrics/MethodLength:
+  Max: 22
+
+Metrics/AbcSize:
+  Max: 25
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 10
+
+Metrics/ClassLength:
+  Max: 150
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+# drop_piece both performs an action (places a piece) and reports
+# whether it succeeded — renaming it to drop_piece? would misleadingly
+# suggest a pure query with no side effect, so it's exempted here
+# rather than renamed.
+Naming/PredicateMethod:
+  Exclude:
+    - 'lib/board.rb'

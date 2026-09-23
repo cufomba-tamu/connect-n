@@ -22,3 +22,29 @@ Notes:
 - This was the project's initial setup session — most of the
   foundational classes (`Board`, `Player`, `Game`) were scaffolded
   this day, which later sessions built on.
+
+## Session 2 — 2026-09-23
+
+Driver: Chibuzo Ufomba
+Navigator: Michael Zhou
+
+Work completed:
+- Reviewed Michael's win-detection and Scoreboard commits on `main`
+  together and identified two gaps: win/draw checks hardcode a
+  4-piece window instead of using a configurable win length, and
+  `Scoreboard` is in-memory only (not persistent, not keyed by player
+  name)
+- Rebased `game/wire-full-game` onto `main` and wired real win/draw
+  detection into `Game#play`, with specs; opened a PR referencing
+  issue #10
+- Reviewed `game/configure-board` for the same gaps
+- Updated `README.md`: fixed the "running the game" placeholder,
+  added a features list and a known-limitations section
+
+Notes:
+- Agreed Michael will take the win-length generalization and the
+  Scoreboard redesign (persistence + name-keying) as next steps, since
+  both are in his area of the codebase.
+- The win-length and win/draw-wiring work are independent — win/draw
+  wiring didn't need to wait on the win-length fix, so it was done
+  first while that's still in progress.

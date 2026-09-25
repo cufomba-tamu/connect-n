@@ -35,12 +35,25 @@ discuss them.
 
 ## What Was Difficult
 
-_To be filled in._
-
+- **Implementing win detection logic.** Implementing the win detection logic was 
+ the most difficult part of our project because we had to make it work for different board size
+and different win length. We had to check all possible win directions ie, horizontal, vertical and 
+ both diagonal directions. We used loops and grid indexing to make sure we were not going over the
+ board/grid size
+- 
 ## What We'd Do Differently
 
-_To be filled in._
+**Spend more time planning** What we would differently if we were to start over is to
+ spend more time during the initial planning of the development. 
+- This would give us a proper structure to follow, and we would not have to make some significant changes during the 
+ development, eg hardcoding the gameboard dimensions to a 6x7 board size, we later changed this to 
+ a configurable board size that depend on the win length selected. 
+- This would have helped us
+ to define the project requirements more clearly.
 
 ## Is the App Meeting Our Original Goal?
 
-_To be filled in._
+- **Yes, the App meets our original goal**
+ Our goal was to develop a terminal app, ie a Connect Four(N) game 
+ for friends to play together for  fun. A user can also play against a computer. 
+ We achieved our goal as both of these objectives were met.

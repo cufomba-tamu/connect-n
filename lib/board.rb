@@ -18,7 +18,8 @@ class Board
 
   def display_board
     puts column_header
-    @grid.each do |row| # goes through every row in the array
+
+      @grid.each do |row| # goes through every row in the array
       cells = row.map { |cell| display_cell(cell) }
       puts "|#{cells.join('|')}|" # puts vertical bar | between each row/column
     end
@@ -148,6 +149,11 @@ class Board
   def column_header
     numbers = (1..@columns).map { |number| number.to_s.rjust(cell_width) }.join(' ')
     " #{numbers}"
+  end
+
+  # row numbering
+  def row_header
+
   end
 
   # Marks display as a single uppercase letter (e.g. :red -> "R")

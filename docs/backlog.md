@@ -30,7 +30,7 @@ All 10 stories are now Done and merged to `main`.
 | `Board.new` accept `win_length` | **Done** | Fixed on `main` — see story 2. |
 | Remove commented-out duplicate `column_full?` in `board.rb` | **Done** | Removed as part of Michael's win-detection commits, though `column_full?` got rewritten back to a more verbose if/else in the process. |
 | Remove `main.rb` | **Done** | It was a stale scratch/demo script predating `bin/play.rb`, not part of the real app. Deleted after confirming it wasn't still needed. |
-| Resolve `notes_tracker.txt` / `project_proposal` at repo root | **To Do** | Purpose never confirmed; check whether these should be moved into `docs/`, committed intentionally, or deleted. |
+| Resolve `notes_tracker.txt` / `project_proposal` at repo root | **Done** | `notes_tracker.txt` was superseded scratch notes, deleted. `project_proposal` turned out to be genuine day-one (2026-09-11) planning material, so it was moved to `docs/project_proposal.md` instead of deleted, and cross-referenced from `planning.md`. |
 | Write `retrospective.md` | **Done** | All four sections written with real input from both of us; the last remaining required doc. |
 | Rebase and reconcile `game/wire-full-game`, `game/configure-board`, `game/computer-opponent` | **Done** | All three reconciled and merged to `main` (PRs #16, #18). |
 | `display_board` output is hard to read | **Done** | See story 6. |

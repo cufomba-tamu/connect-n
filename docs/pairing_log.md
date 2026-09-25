@@ -48,3 +48,19 @@ Notes:
 - The win-length and win/draw-wiring work are independent — win/draw
   wiring didn't need to wait on the win-length fix, so it was done
   first while that's still in progress.
+
+## Session 3 — 2026-09-25
+
+Driver: Michael Zhou
+Navigator: Chibuzo Ufomba
+
+Work completed:
+- Manually tested the full game end to end: different win lengths,
+  playing against a friend and against the computer, and confirming
+  scoreboard persistence across separate runs
+- Wrote the script for the class presentation
+
+Notes:
+- By this session, all 10 user stories were done and merged, so
+  testing focused on confirming real playthroughs matched the
+  documented behavior rather than finding new gaps.

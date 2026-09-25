@@ -1,5 +1,10 @@
 # Planning
 
+See also `docs/project_proposal.md` — the original proposal written at
+the very start of the project (2026-09-11), before any code existed.
+This file restates/updates that planning in light of how the project
+actually turned out.
+
 ## What we're building
 
 Connect N: a terminal-based, two-player Connect Four variant with a

@@ -1,3 +1,4 @@
 .idea/
 scoreboard.json
 tmp_demo_scoreboard.json
+coverage/

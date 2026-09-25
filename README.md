@@ -32,11 +32,21 @@ bundle install
 
 ## Running the game
 
-🚧 Not yet available on `main` — `bin/play.rb` is still empty here. The
-turn loop, win/draw detection, and board-configuration prompt exist on
-separate feature branches (`game/wire-full-game`,
-`game/configure-board`) that haven't been merged in yet. See Known
-Limitations below and the Project board for current status.
+```bash
+ruby bin/play.rb
+```
+
+You'll be prompted for:
+1. How many pieces in a row wins (3–10, defaults to 4) — board size is
+   derived from this automatically
+2. Player one's name (defaults to "Red" if left blank)
+3. Whether player two is a friend or the computer
+4. Player two's name, if playing against a friend
+
+Then it's a normal turn-by-turn game: type a column number to drop a
+piece, or `q` to quit at any move prompt. When the game ends in a win
+or a draw, results are announced and, on a win, recorded to a local
+scoreboard (`scoreboard.json`) that persists across separate runs.
 
 ## Running the tests
 
@@ -60,17 +70,17 @@ open `coverage/index.html` in a browser afterward to view it.
 - Quit mid-game at any move prompt
 - Configurable win length (Connect 3 through Connect 10), with board
   size derived automatically from the chosen length
-- Win tracking across sessions via a local scoreboard
+- Optional computer opponent — takes a winning move, otherwise blocks
+  the opponent's win, otherwise favors the center column
+- Win tracking across sessions via a local scoreboard, keyed by
+  player name
 
 ## Known Limitations
 
-- The game isn't playable end-to-end from `main` yet — `bin/play.rb`
-  is empty; the turn loop and win-length prompt exist on unmerged
-  feature branches.
-- Win/draw detection currently only works correctly for the default
-  4-in-a-row case. Generalizing it to any configured win length
-  (3–10) is in progress.
-- The scoreboard is in-memory only right now — it doesn't yet persist
-  wins across separate runs of the app, and isn't keyed by player
-  name.
-- The board display doesn't yet label columns with numbers.
+- The computer opponent only looks one move ahead — it takes an
+  immediate win, otherwise blocks an immediate opponent win, otherwise
+  favors the center column. It doesn't plan further ahead than that.
+- Exactly two players per game (fixed `Red`/`Yellow` marks); no
+  support for more players or custom mark colors.
+- The scoreboard is a local JSON file (`scoreboard.json`), not shared
+  between machines — wins only persist on the device you play on.

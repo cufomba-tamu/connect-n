@@ -202,6 +202,17 @@ describe '#ask_dimensions' do
     expect(result).to eq([7, 9, 5])
   end
 
+  it 'rejects non-numeric win-length input, then accepts a valid one' do
+    game = Game.new
+    input = StringIO.new("abc\n4\n")
+    output = StringIO.new
+
+    result = game.ask_dimensions(input: input, output: output)
+
+    expect(result).to eq([6, 7, 4])
+    expect(output.string).to include('Please enter a whole number.')
+  end
+
   it 'rejects a win length above the max, then accepts a valid one' do
     game = Game.new
     input = StringIO.new("100000000000\n4\n")

@@ -50,7 +50,7 @@ class Game
   end
 
   def ask_dimensions(input: $stdin, output: $stdout)
-    output.puts 'Configure your board — how many pieces in a row wins?'
+    output.puts 'Configure your board — how many pieces in a row are needed to win?'
     win_length = ask_win_length(input: input, output: output)
     columns = (2 * win_length) - 1
     rows = win_length + 2

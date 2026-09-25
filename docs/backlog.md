@@ -31,16 +31,12 @@ All 10 stories are now Done and merged to `main`.
 | Remove commented-out duplicate `column_full?` in `board.rb` | **Done** | Removed as part of Michael's win-detection commits, though `column_full?` got rewritten back to a more verbose if/else in the process. |
 | Remove `main.rb` | **Done** | It was a stale scratch/demo script predating `bin/play.rb`, not part of the real app. Deleted after confirming it wasn't still needed. |
 | Resolve `notes_tracker.txt` / `project_proposal` at repo root | **To Do** | Purpose never confirmed; check whether these should be moved into `docs/`, committed intentionally, or deleted. |
-| Missing planning docs (`retrospective.md`) | **In Progress** | "What Went Well" section written; three sections still need real input. `planning.md` and `pairing_log.md` are both done. |
+| Write `retrospective.md` | **Done** | All four sections written with real input from both of us; the last remaining required doc. |
 | Rebase and reconcile `game/wire-full-game`, `game/configure-board`, `game/computer-opponent` | **Done** | All three reconciled and merged to `main` (PRs #16, #18). |
 | `display_board` output is hard to read | **Done** | See story 6. |
 | Correct GitHub Project board status for issues #5 and #6 | **Done** | Both were marked Done before the code actually matched; the code has since caught up, so those statuses are now accurate. |
 | Fix merge commit `771e94c`'s message | **Won't fix** | Contains git's default template text instead of a real message. Already pushed to `main`; not worth rewriting shared history over, but worth being more careful with merge commits going forward. |
 | Scoreboard redesign (persistence + name-keying) | **Done** | See story 5. |
 | Set up RuboCop | **Done** | Gem, config (with a couple of justified exceptions), zero offenses. Merged via PR #20. |
-
-## Icebox / ideas not yet stories
-
-- Configurable player colors/marks beyond red/yellow.
-- Persisting more than win counts (e.g. games played, win streaks) in
-  `Scoreboard`.
+| Wire up SimpleCov | **Done** | Was never actually started despite being in the Gemfile, so `coverage/` had been empty since the first commit. Fixed, and one genuinely untested branch (non-numeric win-length input) got a spec in the process. Line coverage is now 100%. |
+| Bring `design.md` up to date | **Done** | Rewrote to reflect `ComputerPlayer`, the redesigned `Scoreboard`, generalized win detection, and the real `bin/play.rb` flow — removed every "planned"/"not yet" claim that had since become false. |
